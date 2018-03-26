@@ -37,6 +37,54 @@ public class MeetingTree {
     {
         root = newRoot;
     }
+    
+    /**
+     * Finds the node which succeeds a specified node.
+     * 
+     * @param toSucceed The node to find the successor of.
+     * @return The successor node or null if it does not exist.
+     */
+    public Meeting getSuccessor(Meeting toSucceed) {
+    	//Gets the starting point.
+    	Meeting current = toSucceed.getNextRight();
+    	
+    	//Returns null as there is no successor to the specified node.
+    	if (current == null) {
+    		return null;
+    	}
+    	
+    	//Loops until the left-most node is found.
+    	while (current.getNextLeft() != null) {
+    		current = current.getNextLeft();
+    	}
+    	
+    	//Returns the left-most node (the successor).
+    	return current;
+    }
+    
+    /**
+     * Finds the node which precedes a specified node.
+     * 
+     * @param toPrecede The node to find the predecessor of.
+     * @return The predecessor node or null if it does not exist.
+     */
+    public Meeting getPredecessor(Meeting toPrecede) {
+    	//Gets the starting point.
+    	Meeting current = toPrecede.getNextLeft();
+    	
+    	//Returns null as there is no predecessor to the specified node.
+    	if (current == null) {
+    		return null;
+    	}
+    	
+    	//Loops until the right-most node is found.
+    	while (current.getNextRight() != null) {
+    		current = current.getNextRight();
+    	}
+    	
+    	//Returns the right-most node (the predecessor).
+    	return current;
+    }
 
     /**
      * Adds a new node to the MeetingTree with the data given.
@@ -178,7 +226,9 @@ public class MeetingTree {
 	    			previousNode.setNextLeft(currentNode.getNextRight());
     			//Checks if both the left and right pointers are not null
 	    		} else if (currentNode.getNextLeft() != null && currentNode.getNextRight() != null) {
-	    			
+	    			Meeting successor = getSuccessor(currentNode);
+	    			previousNode.setNextLeft(successor);
+	    			deleteNode(successor.getStartTime());
 	    		}
     			deleted = true;
 			} else if (side.equals("right")) {
@@ -193,7 +243,9 @@ public class MeetingTree {
 	    			previousNode.setNextRight(currentNode.getNextRight());
 	    		//Checks if both the left and right pointers are not null
 	    		} else if (currentNode.getNextLeft() != null && currentNode.getNextRight() != null) {
-	    			
+	    			Meeting predecessor = getPredecessor(currentNode);
+	    			previousNode.setNextRight(predecessor);
+	    			deleteNode(predecessor.getStartTime());
 	    		}
     			deleted = true;
     		} else {
