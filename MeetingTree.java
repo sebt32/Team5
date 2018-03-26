@@ -85,7 +85,7 @@ public class MeetingTree {
     	//Returns the right-most node (the predecessor).
     	return current;
     }
-
+    
     /**
      * Adds a new node to the MeetingTree with the data given.
      * 
@@ -129,7 +129,7 @@ public class MeetingTree {
         		}
         	} else {
         		//Displays an error message as the studentID specified already exists.
-        		System.out.println("\nError: Student with specified ID already exists.");
+        		System.out.println("\nError: Meeting with specified start time already exists.");
         		successful = false;
         	}
         }
@@ -195,7 +195,7 @@ public class MeetingTree {
     		currentTime = currentNode.getStartTime();
     		
     		//Checks if the current time is the time being searched for.
-    		if (searchTime == currentTime) {
+    		if (searchTime.compareTo(currentTime) == 0) {
     			found = true;
     		} else {
     			//Checks if the search time would be to the left or right of the current time.
@@ -226,9 +226,17 @@ public class MeetingTree {
 	    			previousNode.setNextLeft(currentNode.getNextRight());
     			//Checks if both the left and right pointers are not null
 	    		} else if (currentNode.getNextLeft() != null && currentNode.getNextRight() != null) {
+	    			//Finds the successor of the current node and stores its values.
 	    			Meeting successor = getSuccessor(currentNode);
-	    			previousNode.setNextLeft(successor);
+	    			Date newStart = successor.getStartTime();
+	    			Date newEnd = successor.getEndTime();
+	    			String newDescription = successor.getDescription();
+	    			
+	    			//Deletes the successor and stores its original values in the current node.
 	    			deleteNode(successor.getStartTime());
+	    			currentNode.setStartTime(newStart);
+	    			currentNode.setEndTime(newEnd);
+	    			currentNode.setDescription(newDescription);
 	    		}
     			deleted = true;
 			} else if (side.equals("right")) {
@@ -243,9 +251,17 @@ public class MeetingTree {
 	    			previousNode.setNextRight(currentNode.getNextRight());
 	    		//Checks if both the left and right pointers are not null
 	    		} else if (currentNode.getNextLeft() != null && currentNode.getNextRight() != null) {
+	    			//Finds the predecessor of the current node and stores its values.
 	    			Meeting predecessor = getPredecessor(currentNode);
-	    			previousNode.setNextRight(predecessor);
+	    			Date newStart = predecessor.getStartTime();
+	    			Date newEnd = predecessor.getEndTime();
+	    			String newDescription = predecessor.getDescription();
+	    			
+	    			//Deletes the predecessor and stores its original values in the current node.
 	    			deleteNode(predecessor.getStartTime());
+	    			currentNode.setStartTime(newStart);
+	    			currentNode.setEndTime(newEnd);
+	    			currentNode.setDescription(newDescription);
 	    		}
     			deleted = true;
     		//Runs if the node to delete is the root of the tree.
@@ -255,20 +271,28 @@ public class MeetingTree {
     				root = null;
     			//Checks if just the right pointer is null.
         		} else if (currentNode.getNextLeft() != null && currentNode.getNextRight() == null) {
-        			root.setNextRight(currentNode.getNextLeft());
+        			root = currentNode.getNextLeft();
     			//Checks if just the left pointer is null.
 	    		} else if (currentNode.getNextLeft() == null && currentNode.getNextRight() != null) {
-	    			root.setNextRight(currentNode.getNextRight());
+	    			root = currentNode.getNextRight();
 	    		//Checks if both the left and right pointers are not null
 	    		} else if (currentNode.getNextLeft() != null && currentNode.getNextRight() != null) {
+	    			//Finds the predecessor of the current node and stores its values.
 	    			Meeting predecessor = getPredecessor(currentNode);
-	    			root.setNextRight(predecessor);
+	    			Date newStart = predecessor.getStartTime();
+	    			Date newEnd = predecessor.getEndTime();
+	    			String newDescription = predecessor.getDescription();
+	    			
+	    			//Deletes the predecessor and stores its original values in the current node.
 	    			deleteNode(predecessor.getStartTime());
+	    			root.setStartTime(newStart);
+	    			root.setEndTime(newEnd);
+	    			root.setDescription(newDescription);
 	    		}
     			deleted = true;
 			}
     	} else {
-    		System.out.println("Error: The student to be deleted could not be found.");
+    		System.out.println("Error: The meeting to be deleted could not be found.");
     		deleted = false;
     	}
 		return deleted;

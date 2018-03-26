@@ -19,13 +19,17 @@ public class Employee {
 	private String surname;
 	private String password;
 	private int id;
+	private MeetingTree meetings = new MeetingTree();
+	private Undo undo = new Undo();
 
-	public void addMeeting() 
-	{
-		MeetingTree tree = new MeetingTree();
+	/**
+	 * Method for adding new meetings to the meeting tree.
+	 */
+	public void addMeeting() {
 		Scanner scr = new Scanner(System.in);
 		System.out.println("Enter the start date and start time of the meeting");
 		System.out.println("Enter in the format: dd/mm/yy hh:mm");
+		System.out.print("Start time: ");
 		DateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy hh:mm");
 	    Date startTime = null;
 	    Date endTime = null;
@@ -39,8 +43,9 @@ public class Employee {
 	        e.printStackTrace();
 	    }
 		
-		System.out.println("Enter the end date and end time of the meeting");
+		System.out.println("\nEnter the end date and end time of the meeting");
 		System.out.println("Enter in the format: dd/mm/yy hh:mm");
+		System.out.print("End time: ");
 		try 
 		{
 			endTime = dateFormat.parse(scr.nextLine());
@@ -49,20 +54,25 @@ public class Employee {
 	    {
 	        e.printStackTrace();
 	    }
-		System.out.println("Enter the description for the meeting");
+		System.out.println("\nEnter the description for the meeting");
 		description = scr.nextLine();
 		
-		tree.addToMeetingTree(null, startTime, endTime, description);
+		meetings.addToMeetingTree(meetings.getRoot(), startTime, endTime, description);
+		//undo.addUndoable(Undoable);
 	}
-
+	
+	/**
+	 * Method to find a list of potential meeting dates based on given parameters.
+	 */
 	public void searchMeeting() 
 	{
 		Date startTime = null;
 		
 		Scanner s = new Scanner(System.in);
 		DateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy hh:mm");
-		System.out.println("Enter the date and start time of the meeting you want to delete");
+		System.out.println("Enter the date and start time of the meeting you want to search");
 		System.out.println("Enter in the format: dd/mm/yy hh:mm");
+		System.out.print("Start time: ");
 		
 		try 
 		{
@@ -74,26 +84,28 @@ public class Employee {
 	        e.printStackTrace();
 	    }
 		
-		MeetingTree tree = new MeetingTree();
-		tree.searchMeetingTree(startTime);
+		meetings.searchMeetingTree(startTime);
 	}
 	
-	public void showAll()
-	{
-		Meeting currentNode;
-		MeetingTree mt = new MeetingTree();
-		currentNode = mt.getRoot();
-		mt.printMeetingTree(currentNode);
+	/**
+	 * Method to edit an existing meeting.
+	 */
+	public void editMeeting() {
+		
 	}
-
+	
+	/**
+	 * Method to delete a meeting.
+	 */
 	public void deleteMeeting() 
 	{
 		Date startTime = null;
 		
 		Scanner sc = new Scanner(System.in);
 		DateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy hh:mm");
-		System.out.println("Enter the date and start time of the meeting you want to delete");
+		System.out.println("Enter the date and start time of the meeting you want to delete.");
 		System.out.println("Enter in the format: dd/mm/yy hh:mm");
+		System.out.print("Start time: ");
 		try 
 		{
 			startTime = dateFormat.parse(sc.nextLine());
@@ -103,21 +115,39 @@ public class Employee {
 	        e.printStackTrace();
 	    }
 		
-		MeetingTree tree = new MeetingTree();
-		tree.deleteNode(startTime);
+		
+		meetings.deleteNode(startTime);
 	}
-
+	
+	/**
+	 * Method to undo the last add, edit, or delete action.
+	 */
 	public void undo() 
 	{
 		
 	}
+	
+	/**
+	 * Method to print the meetings of the employee to display.
+	 */
+	public void printMeetings() {
+		meetings.printMeetingTree(meetings.getRoot());
+	}
+	
+	/**
+	 * Method to call the write to file method.
+	 */
 	public void writeToFile()
 	{
-		Meeting currentNode;
-		MeetingTree r = new MeetingTree();
-		currentNode = r.getRoot();
-		write(currentNode);
+		write(meetings.getRoot());
 	}
+	
+	/**
+	 * Method to write the employees meetings to a file.
+	 * 
+	 * @param currentNode
+	 * @return
+	 */
 	public int write(Meeting currentNode) 
 	{
 		if (currentNode != null) 
@@ -142,6 +172,9 @@ public class Employee {
 		return -1;
 	}
 
+	/**
+	 * Method to read the employees meetings from a file.
+	 */
 	public void readFromFile()
 	{
 		  try 
@@ -164,8 +197,7 @@ public class Employee {
 				  
 				  try
 				  {
-					  MeetingTree mtTemp = new MeetingTree();
-					  mtTemp.addToMeetingTree(null, startTime, endTime, description);
+					  meetings.addToMeetingTree(null, startTime, endTime, description);
 					  System.out.println(startTime + " " + " " + endTime + " " + description);
 				  }
 				  
