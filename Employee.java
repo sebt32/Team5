@@ -5,6 +5,8 @@ import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.InputMismatchException;
@@ -64,83 +66,71 @@ public class Employee {
 	/**
 	 * Method to find a list of potential meeting dates based on given parameters.
 	 */
-	public void searchMeeting() 
+	public int meetingSearch() 
 	{
-		Date startTime = null;
-		
-		Scanner s = new Scanner(System.in);
+		Date startTime = new Date();
+		Date endTime = new Date();
 		DateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy hh:mm");
-		System.out.println("Enter the date and start time of the meeting you want to search");
-		System.out.println("Enter in the format: dd/mm/yy hh:mm");
-		System.out.print("Start time: ");
-		
-		try 
+		Scanner s = new Scanner(System.in);
+		System.out.println("Would you like to search meetings within a range or for a particular meeting?");
+		System.out.println("Enter 'r' if you want to search by range or enter 'm' if you want to search for a meeting");
+		String x = s.nextLine();
+		if(x.equals("m"))
 		{
-			startTime = dateFormat.parse(s.nextLine());
-	    } 
-		
-	    catch (ParseException e) 
-	    {
-	        e.printStackTrace();
-	    }
-		
-		meetings.searchMeetingTree(startTime);
+			System.out.println("Enter the date and start time of the meeting you want to search");
+			System.out.println("Enter in the format: dd/mm/yy hh:mm");
+			try 
+			{
+				startTime = dateFormat.parse(s.nextLine());
+		    } 
+			
+		    catch (ParseException e) 
+		    {
+		        e.printStackTrace();
+		    }
+			meetings.searchMeetingTree(startTime);
+		}
+		else if(x.equals("r"))
+		{
+			System.out.println("Enter the date and start time of the meeting you want to search");
+			System.out.println("Enter in the format: dd/mm/yy hh:mm");
+			try 
+			{
+				startTime = dateFormat.parse(s.nextLine());
+		    } 
+		    catch (ParseException e) 
+		    {
+		        e.printStackTrace();
+		    }
+			
+			System.out.println("Enter the end date and end time of the meeting");
+			System.out.println("Enter in the format: dd/mm/yy hh:mm");
+			try 
+			{
+				endTime = dateFormat.parse(s.nextLine());
+		    } 
+		    catch (ParseException e) 
+		    {
+		        e.printStackTrace();
+		    }
+			LocalDate startTime1 = startTime.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+			LocalDate endTime1 = startTime.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+			meetings.checkRange(startTime1, endTime1);
+		}
+		else
+		{
+			System.out.println("You have entered an invalid option");
+			System.out.println("Please select again");
+			meetingSearch();
+		}
+		return -1;
 	}
 	
 	/**
 	 * Method to edit an existing meeting.
 	 */
 	public void editMeeting() {
-		Date startTime = null;
-		Scanner sc = new Scanner(System.in);
-		DateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy hh:mm");
 		
-		System.out.println("Enter the date and start time of the meeting you want to edit.");
-		System.out.println("Enter in the format: dd/mm/yy hh:mm");
-		System.out.print("Start time: ");
-		
-		try 
-		{
-			startTime = dateFormat.parse(sc.nextLine());
-	    } 
-	    catch (ParseException e) 
-	    {
-	        e.printStackTrace();
-	    }
-		
-		Meeting meetingToEdit = meetings.searchMeetingTree(startTime);
-		meetings.deleteNode(meetingToEdit.getStartTime());
-		
-		Scanner scr = new Scanner(System.in);
-		System.out.println("Enter the new start date and time of the meeting");
-		System.out.println("Enter in the format: dd/mm/yy hh:mm");
-		System.out.print("Start time: ");
-	    Date endTime = null;
-	    String description;
-		try 
-		{
-			startTime = dateFormat.parse(scr.nextLine());
-	    } 
-	    catch (ParseException e) 
-	    {
-	        e.printStackTrace();
-	    }
-		
-		System.out.println("\nEnter the new end date and time of the meeting");
-		System.out.println("Enter in the format: dd/mm/yy hh:mm");
-		System.out.print("End time: ");
-		try 
-		{
-			endTime = dateFormat.parse(scr.nextLine());
-	    } 
-	    catch (ParseException e) 
-	    {
-	        e.printStackTrace();
-	    }
-		System.out.println("\nEnter the new description for the meeting");
-		description = scr.nextLine();
-		
-		meetings.addToMeetingTree(meetings.getRoot(), startTime, endTime, description);
 	}
 	
 	/**

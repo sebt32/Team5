@@ -1,4 +1,7 @@
+import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Class for creating and manipulating a binary tree of meetings.
@@ -155,7 +158,7 @@ public class MeetingTree {
     		currentStartTime = currentNode.getStartTime();
     		
     		//Checks if the current time is the time being searched for.
-    		if (searchTime.compareTo(currentStartTime) == 0) {
+    		if (searchTime == currentStartTime) {
     			found = true;
     		} else {
     			//Checks if the search time would be to the left or right of the current time.
@@ -173,6 +176,12 @@ public class MeetingTree {
     	} else {
     		return null;
     	}
+    }
+    
+    public List<LocalDate> checkRange(LocalDate startTime, LocalDate endTime)
+    {
+    	System.out.println(startTime.datesUntil(endTime).collect(Collectors.toList()));
+    	return startTime.datesUntil(endTime).collect(Collectors.toList());
     }
     
     /**
