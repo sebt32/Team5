@@ -248,9 +248,24 @@ public class MeetingTree {
 	    			deleteNode(predecessor.getStartTime());
 	    		}
     			deleted = true;
+    		//Runs if the node to delete is the root of the tree.
     		} else {
-				root = null;
-				deleted = true;
+    			//Checks if both of the left and right pointers are null
+    			if (currentNode.getNextLeft() == null && currentNode.getNextRight() == null) {
+    				root = null;
+    			//Checks if just the right pointer is null.
+        		} else if (currentNode.getNextLeft() != null && currentNode.getNextRight() == null) {
+        			root.setNextRight(currentNode.getNextLeft());
+    			//Checks if just the left pointer is null.
+	    		} else if (currentNode.getNextLeft() == null && currentNode.getNextRight() != null) {
+	    			root.setNextRight(currentNode.getNextRight());
+	    		//Checks if both the left and right pointers are not null
+	    		} else if (currentNode.getNextLeft() != null && currentNode.getNextRight() != null) {
+	    			Meeting predecessor = getPredecessor(currentNode);
+	    			root.setNextRight(predecessor);
+	    			deleteNode(predecessor.getStartTime());
+	    		}
+    			deleted = true;
 			}
     	} else {
     		System.out.println("Error: The student to be deleted could not be found.");
