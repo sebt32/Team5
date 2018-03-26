@@ -237,7 +237,6 @@ public class Employee {
 				  try
 				  {
 					  meetings.addToMeetingTree(null, startTime, endTime, description);
-					  System.out.println(startTime + " " + " " + endTime + " " + description);
 				  }
 				  
 				  catch(InputMismatchException ime)
