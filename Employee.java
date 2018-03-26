@@ -91,7 +91,56 @@ public class Employee {
 	 * Method to edit an existing meeting.
 	 */
 	public void editMeeting() {
+		Date startTime = null;
+		Scanner sc = new Scanner(System.in);
+		DateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy hh:mm");
 		
+		System.out.println("Enter the date and start time of the meeting you want to edit.");
+		System.out.println("Enter in the format: dd/mm/yy hh:mm");
+		System.out.print("Start time: ");
+		
+		try 
+		{
+			startTime = dateFormat.parse(sc.nextLine());
+	    } 
+	    catch (ParseException e) 
+	    {
+	        e.printStackTrace();
+	    }
+		
+		Meeting meetingToEdit = meetings.searchMeetingTree(startTime);
+		meetings.deleteNode(meetingToEdit.getStartTime());
+		
+		Scanner scr = new Scanner(System.in);
+		System.out.println("Enter the new start date and time of the meeting");
+		System.out.println("Enter in the format: dd/mm/yy hh:mm");
+		System.out.print("Start time: ");
+	    Date endTime = null;
+	    String description;
+		try 
+		{
+			startTime = dateFormat.parse(scr.nextLine());
+	    } 
+	    catch (ParseException e) 
+	    {
+	        e.printStackTrace();
+	    }
+		
+		System.out.println("\nEnter the new end date and time of the meeting");
+		System.out.println("Enter in the format: dd/mm/yy hh:mm");
+		System.out.print("End time: ");
+		try 
+		{
+			endTime = dateFormat.parse(scr.nextLine());
+	    } 
+	    catch (ParseException e) 
+	    {
+	        e.printStackTrace();
+	    }
+		System.out.println("\nEnter the new description for the meeting");
+		description = scr.nextLine();
+		
+		meetings.addToMeetingTree(meetings.getRoot(), startTime, endTime, description);
 	}
 	
 	/**
