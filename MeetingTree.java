@@ -155,7 +155,7 @@ public class MeetingTree {
     		currentStartTime = currentNode.getStartTime();
     		
     		//Checks if the current time is the time being searched for.
-    		if (searchTime == currentStartTime) {
+    		if (searchTime.compareTo(currentStartTime) == 0) {
     			found = true;
     		} else {
     			//Checks if the search time would be to the left or right of the current time.

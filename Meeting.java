@@ -74,6 +74,33 @@ public class Meeting {
     public String getDescription() {
     	return description;
     }
+    
+    /**
+     * Sets a new start time for the meeting.
+     * 
+     * @param newStart
+     */
+    public void setStartTime(Date newStart) {
+    	startTime = newStart;
+    }
+    
+    /**
+     * Sets a new end time for the meeting.
+     * 
+     * @param newEnd
+     */
+    public void setEndTime(Date newEnd) {
+    	endTime = newEnd;
+    }
+    
+    /**
+     * Sets a new description for the meeting.
+     * 
+     * @param newDescription
+     */
+    public void setDescription(String newDescription) {
+    	description = newDescription;
+    }
 
     /**
      * Get the next left node in the tree.
